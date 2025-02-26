@@ -1,5 +1,6 @@
 #!/bin/bash
-# Verifica e instala figlet e toilet se não estiverem presentes
+
+# Check and Install Fliget and Toilet in case it is not present
 if ! command -v figlet &> /dev/null; then
     echo "Instalando figlet..."
     sudo apt-get update && sudo apt-get install -y figlet
@@ -10,7 +11,7 @@ if ! command -v toilet &> /dev/null; then
     sudo apt-get install -y toilet
 fi
 
-# Exibir banner com Figlet
+# Show Banner
 clear
 echo "=========================================="
 figlet -c "LabScale"
@@ -19,19 +20,18 @@ echo "Este script foi desenvolvido pelo time da LabScale."
 echo "Acesse nosso site: https://dashboard.labscale.com.br"
 echo "=========================================="
 
-# Pausar por 2 segundos antes de continuar
 sleep 2
 
-# Verifica se o usuário é root
+# Check root user
 if [ "$(id -u)" -ne 0 ]; then
     echo "Este script precisa ser executado como root!"
     exit 1
 fi
 
-# Solicita o Network ID ao usuário
+# get the network id
 read -p "Digite o ZeroTier Network ID: " NETWORK_ID
 
-# Verifica se o ZeroTier já está instalado, se não estiver, instala
+# Check if the zero-tier is installed, if not will install
 if ! command -v zerotier-cli &> /dev/null; then
     echo "ZeroTier não encontrado. Instalando..."
     curl -s https://install.zerotier.com | sudo bash
@@ -39,11 +39,11 @@ else
     echo "ZeroTier já está instalado."
 fi
 
-# Garante que o serviço do ZeroTier está rodando
+# ensure zero-tier is running
 sudo systemctl enable zerotier-one
 sudo systemctl start zerotier-one
 
-# Faz o join na rede informada pelo usuário
+# Join Zero-Tier Network
 echo "Ingressando na rede $NETWORK_ID..."
 sudo zerotier-cli join "$NETWORK_ID"
 
@@ -51,7 +51,7 @@ echo "Join solicitado! Autorize o dispositivo no painel do ZeroTier."
 echo "Para verificar o status da conexão, use: sudo zerotier-cli listnetworks"
 
 
-# Caminho do arquivo Netplan
+# Path to Netplan
 NETPLAN_FILE="/etc/netplan/01-netcfg.yaml"
 
 echo "Configurando a interface eth1 com IP 192.168.0.1/30..."
@@ -73,7 +73,7 @@ EOF
 echo "Aplicando as configurações de rede..."
 sudo netplan apply
 
-# Passo 3 - Habilitar roteamento no kernel
+# Enable Kernel Routing
 echo "Habilitando roteamento no kernel..."
 echo "net.ipv4.ip_forward=1" | sudo tee /etc/sysctl.d/99-zerotier.conf > /dev/null
 sudo sysctl -p /etc/sysctl.d/99-zerotier.conf
