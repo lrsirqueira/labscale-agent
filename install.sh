@@ -1,4 +1,26 @@
 #!/bin/bash
+# Verifica e instala figlet e toilet se não estiverem presentes
+if ! command -v figlet &> /dev/null; then
+    echo "Instalando figlet..."
+    sudo apt-get update && sudo apt-get install -y figlet
+fi
+
+if ! command -v toilet &> /dev/null; then
+    echo "Instalando toilet..."
+    sudo apt-get install -y toilet
+fi
+
+# Exibir banner com Figlet
+clear
+echo "=========================================="
+figlet -c "LabScale"
+echo "=========================================="
+echo "Este script foi desenvolvido pelo time da LabScale."
+echo "Acesse nosso site: https://dashboard.labscale.com.br"
+echo "=========================================="
+
+# Pausar por 2 segundos antes de continuar
+sleep 2
 
 # Verifica se o usuário é root
 if [ "$(id -u)" -ne 0 ]; then
