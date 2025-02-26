@@ -14,10 +14,10 @@ fi
 # Show Banner
 clear
 echo "=========================================="
-figlet -c "LabScale"
-echo "=========================================="
+echo ""
 echo "Este script foi desenvolvido pelo time da LabScale."
 echo "Acesse nosso site: https://dashboard.labscale.com.br"
+echo ""
 echo "=========================================="
 
 sleep 2
