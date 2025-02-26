@@ -5,6 +5,7 @@ Agent to install Zero-tier and Integrate Overlay network to the Linux Server
 Execute os comandos abaixo:
 
 ```bash
-git clone https://github.com/lrsirqueira/labscale-agent && cd labscale-agent
+git clone https://github.com/lrsirqueira/labscale-agent
+cd labscale-agent
 chmod +x install.sh
 ./install.sh
